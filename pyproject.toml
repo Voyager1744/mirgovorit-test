@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "mir-govorit-test"
+version = "0.1.0"
+description = ""
+authors = ["Dmitriy Ushakov Air <udv8@ya.ru>"]
+readme = "README.md"
+packages = [{include = "mir_govorit_test"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
