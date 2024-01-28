@@ -26,8 +26,8 @@ SECRET_KEY = "django-insecure-%-hsnac!i7k68l#nf_e$hme$hy0@b$z9*&nu8&1rhqwn)2m8@m
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
+    "127.0.0.1",
+    "localhost",
 ]
 
 
@@ -58,8 +58,7 @@ ROOT_URLCONF = "mir_govorit_test.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / 'templates']
-        ,
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
