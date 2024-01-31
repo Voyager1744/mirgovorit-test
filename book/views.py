@@ -13,36 +13,38 @@ def add_product_to_recipe(request):
         weight = request.GET.get("weight")
 
         if not recipe_id or not product_id or not weight:
-            return JsonResponse({"error": "Не указаны все необходимые аргументы"}, status=400)
+            return JsonResponse(
+                {"error": "Не указаны все необходимые аргументы"}, status=400
+            )
 
         recipe = Recipe.objects.get(id=recipe_id)
-        if not recipe:
-            return JsonResponse({"error": "Рецепт не найден"}, status=404)
 
         product = Product.objects.get(id=product_id)
-        if not product:
-            return JsonResponse({"error": "Продукт не найден"}, status=404)
 
         try:
             weight = int(weight)
         except ValueError:
             return JsonResponse({"error": "Вес должен быть числом"}, status=400)
 
-        recipe_product = ProductRecipe.objects.filter(recipe=recipe, product=product).first()
+        recipe_product, created = ProductRecipe.objects.get_or_create(
+            recipe=recipe, product=product
+        )
         if recipe_product:
             recipe_product.weight += int(weight)
             recipe_product.save()
         else:
-            ProductRecipe.objects.create(recipe=recipe, product=product, weight=int(weight))
+            ProductRecipe.objects.create(
+                recipe=recipe, product=product, weight=int(weight)
+            )
 
     except Recipe.DoesNotExist:
-        return JsonResponse({"error": 'Recipe does not exist'}, status=500)
+        return JsonResponse({"error": "Recipe does not exist"}, status=500)
     except Product.DoesNotExist:
-        return JsonResponse({"error": 'Product does not exist'}, status=500)
+        return JsonResponse({"error": "Product does not exist"}, status=500)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        return JsonResponse({"error": str(e)}, status=500)
 
-    return JsonResponse({'message': 'Product added/updated successfully'}, status=200)
+    return JsonResponse({"message": "Product added/updated successfully"}, status=200)
 
 
 @require_http_methods(["GET"])
@@ -54,8 +56,6 @@ def cook_recipe(request):
             return JsonResponse({"error": "Не указан рецепт"}, status=400)
 
         recipe = Recipe.objects.get(id=recipe_id)
-        if not recipe:
-            return JsonResponse({"error": "Рецепт не найден"}, status=404)
 
         products_in_recipe = ProductRecipe.objects.filter(recipe=recipe)
         if not products_in_recipe:
@@ -66,9 +66,9 @@ def cook_recipe(request):
             product.product.save()
 
     except Recipe.DoesNotExist:
-        return JsonResponse({"error": 'Recipe does not exist'}, status=500)
+        return JsonResponse({"error": "Recipe does not exist"}, status=404)
 
-    return JsonResponse({'message': 'Рецепт приготовлен'}, status=200)
+    return JsonResponse({"message": "Рецепт приготовлен"}, status=200)
 
 
 @require_http_methods(["GET"])
@@ -77,5 +77,3 @@ def show_recipes_without_product(request):
     recipes = Recipe.objects.exclude(products__id=product_id).distinct()
 
     return render(request, "recipes.html", {"recipes": recipes})
-
-

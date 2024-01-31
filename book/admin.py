@@ -11,7 +11,10 @@ class ProductRecipeInline(admin.TabularInline):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ("id", "name",)
+    list_display = (
+        "id",
+        "name",
+    )
     inlines = (ProductRecipeInline,)
     search_fields = ("name",)
 

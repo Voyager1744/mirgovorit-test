@@ -11,7 +11,7 @@ class Product(models.Model):
         verbose_name_plural = "Продукты"
 
     def __str__(self):
-        return f'{self.name} (id={self.id})'
+        return f"{self.name} (id={self.id})"
 
 
 class Recipe(models.Model):
