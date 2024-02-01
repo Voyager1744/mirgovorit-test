@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  backend:
+    build: .
+    container_name: mir_govorit_test_backend
+    command: poetry run python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
